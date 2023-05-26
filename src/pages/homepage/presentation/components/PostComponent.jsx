@@ -3,7 +3,20 @@ import PostActionComp from "./PostActionComp";
 import { FaRegComment } from "react-icons/fa";
 import { AiOutlineHeart, AiOutlineRetweet } from "react-icons/ai";
 import { Assets } from "../../../../assets";
-const PostComponent = () => {
+import { useDispatch } from "react-redux";
+import { likePost } from "../../../../redux/slices/postSlice";
+const PostComponent = ({ post, index }) => {
+  const myId = "this_is--My--123Id";
+  const dispatch = useDispatch();
+
+  const handlePostLike = () => {
+    dispatch(
+      likePost({
+        myId,
+        postIndex: index,
+      })
+    );
+  };
   return (
     <section>
       <div className="flex gap-3 my-10">
@@ -14,17 +27,19 @@ const PostComponent = () => {
             <p className="text-[rgba(0,0,0,.5)] text-sm">@Owen</p>
             <small className="text-[rgba(0,0,0,.5)] text-sm">May 5</small>
           </div>
-          <p className="text-[#676a6e]">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta
-            architecto doloremque eos sapiente nemo voluptas quasi tempore fugit
-            harum, tempora nisi, eveniet est aliquid dolore similique molestias
-            dolor accusantium earum!
-          </p>
+          <p className="text-[#676a6e]">{post.content}</p>
 
           <div className="flex items-center mt-4 gap-8">
-            <PostActionComp icon={FaRegComment} count="3" />
-            <PostActionComp icon={AiOutlineRetweet} count="3" />
-            <PostActionComp icon={AiOutlineHeart} count="3" />
+            <PostActionComp icon={FaRegComment} count={post.comments.length} />
+            <PostActionComp
+              icon={AiOutlineRetweet}
+              count={post.retweet.length}
+            />
+            <PostActionComp
+              onClick={handlePostLike}
+              icon={AiOutlineHeart}
+              count={post.likes.length}
+            />
           </div>
         </div>
       </div>
